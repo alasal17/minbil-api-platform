@@ -9,7 +9,7 @@ cors = CORS()
 app = Flask(__name__)
 cors.init_app(app)
 app.wsgi_app = ProxyFix(app.wsgi_app)
-api.init_app(app)
+api.init_app(app, doc="/docs")
 
 port = int(os.environ.get("PORT", 5000))
 
