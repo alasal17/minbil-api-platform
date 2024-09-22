@@ -6,6 +6,6 @@ python-dotenv==0.21.0
 pytz==2022.6
 requests==2.32.2
 uritemplate==4.1.1
-urllib3==1.26.12
+urllib3==1.26.19
 Werkzeug==3.0.3
 gunicorn==22.0.0
