@@ -5,6 +5,7 @@ from .services_api import api as sa
 from flask import jsonify, request
 
 api = Api(
+    doc='/docs',
     title="Minbil-plattform-API",
     version="1.0",
     description="API with Flask-RestX",
