@@ -1,21 +1,20 @@
-# start by pulling the python image
-FROM python:3.11
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
-# copy the requirements file into the image
-COPY ./requirements.txt /app/requirements.txt
-
-# switch working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# install the dependencies and packages in the requirements file
-RUN pip install -r requirements.txt
+# Copy the current directory contents into the container at /app
+ADD . /app
 
-# copy every content from the local file to the image
-COPY . /app
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# configure the container to run in an executed manner
-ENTRYPOINT [ "python" ]
+# Define environment variable
+ENV NAME World
 
-CMD ["app.py" ]
+# Run the app with gunicorn
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
