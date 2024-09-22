@@ -5,7 +5,7 @@ from datetime import datetime
 import hashlib
 
 # Definerer namespace
-api = Namespace('users', description="User registration and login operations")
+api = Namespace('auth', description="User registration and login operations")
 
 # Request parsers for registration og login
 registration_model = api.model('Register', {

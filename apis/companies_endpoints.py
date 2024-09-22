@@ -6,10 +6,10 @@ from datetime import datetime
 import hashlib
 
 # Definerer namespace
-api = Namespace('company', description="Company management operations")
+api = Namespace('companies', description="Company management operations")
 
 # Model for company data
-company_model = api.model('Company', {
+company_model = api.model('companies', {
     'CEO': fields.String(required=True, description='Company CEO'),
     'about': fields.String(required=True, description='Company about section'),
     'address': fields.String(required=True, description='Company address'),
@@ -46,7 +46,7 @@ class CreateCompany(Resource):
         cid = hashlib.sha256(f"{data['org_number']}-{data['company_name']}".encode('utf-8')).hexdigest()
         
         # Sjekk om selskapet allerede eksisterer
-        company_ref = db.collection('company').document(cid)
+        company_ref = db.collection('companies').document(cid)
         if company_ref.get().exists:
             return {'message': 'Company with this organization number and name already exists'}, 400
         
@@ -76,7 +76,7 @@ class CreateCompany(Resource):
 class GetAllCompanies(Resource):
     def get(self):
         companies = []
-        company_ref = db.collection('company').get()
+        company_ref = db.collection('companies').get()
         
         for company in company_ref:
             companies.append(company.to_dict())
@@ -84,7 +84,7 @@ class GetAllCompanies(Resource):
         return {'companies': companies}, 200
 
 # Endepunkt for å hente et selskap basert på uid
-@api.route('/company/<string:uid>')
+@api.route('/getById/<string:uid>')
 class GetCompanyByUID(Resource):
     def get(self, uid):
         # Valider at uid eksisterer i 'users' collection
@@ -92,7 +92,7 @@ class GetCompanyByUID(Resource):
             return {'message': 'User ID does not exist'}, 400
         
         # Søk etter selskaper knyttet til uid
-        company_ref = db.collection('company').where('uid', '==', uid).get()
+        company_ref = db.collection('companies').where('uid', '==', uid).get()
         if not company_ref:
             return {'message': 'No companies found for this user'}, 404
         
@@ -100,7 +100,7 @@ class GetCompanyByUID(Resource):
         return {'companies': companies}, 200
 
 # Endepunkt for å oppdatere en eksisterende bedrift basert på uid
-@api.route('/update/<string:uid>')
+@api.route('/edit/<string:uid>')
 class UpdateCompany(Resource):
     @api.expect(company_model)
     def put(self, uid):
@@ -111,7 +111,7 @@ class UpdateCompany(Resource):
         data = api.payload
         
         # Søk etter selskapet basert på uid
-        company_ref = db.collection('company').where('uid', '==', uid).get()
+        company_ref = db.collection('companies').where('uid', '==', uid).get()
         if not company_ref:
             return {'message': 'Company not found'}, 404
         
@@ -135,12 +135,12 @@ class UpdateCompany(Resource):
         }
         
         # Oppdater selskapet i Firebase
-        db.collection('company').document(cid).update(update_data)
+        db.collection('companies').document(cid).update(update_data)
         
         return {'message': 'Company updated successfully'}, 200
 
 # Endepunkt for å slette en bedrift basert på uid
-@api.route('/delete/<string:uid>')
+@api.route('/del/<string:uid>')
 class DeleteCompany(Resource):
     def delete(self, uid):
         # Valider at uid eksisterer i 'users' collection
@@ -148,7 +148,7 @@ class DeleteCompany(Resource):
             return {'message': 'User ID does not exist'}, 400
         
         # Søk etter selskapet basert på uid
-        company_ref = db.collection('company').where('uid', '==', uid).get()
+        company_ref = db.collection('companies').where('uid', '==', uid).get()
         if not company_ref:
             return {'message': 'Company not found'}, 404
         
@@ -157,6 +157,6 @@ class DeleteCompany(Resource):
         cid = company_doc.id
         
         # Slett selskapet fra Firebase
-        db.collection('company').document(cid).delete()
+        db.collection('companies').document(cid).delete()
         
         return {'message': 'Company deleted successfully'}, 200

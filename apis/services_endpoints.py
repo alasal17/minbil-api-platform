@@ -6,11 +6,11 @@ from datetime import datetime
 import hashlib
 
 # Definerer namespace
-api = Namespace('service', description="Service management operations")
+api = Namespace('services', description="Service management operations")
 
 # Service model
 service_model = api.model(
-    'Service', 
+    'services', 
     {
         "title": fields.String(required=True),
         "description": fields.String(required=True),
@@ -18,10 +18,7 @@ service_model = api.model(
         "image_url": fields.String(required=True),
         "price": fields.Float(required=True),
         "tags": fields.List(fields.String()),
-        "created_at": fields.String(),  # Blir auto generert
-        "updated_at": fields.String(),  # Blir auto generert
-        "status": fields.Boolean(),
-        "cid": fields.String(required=True)  # Company ID
+        "status": fields.Boolean()
     }
 )
 
@@ -33,7 +30,7 @@ def generate_service_id(title, cid):
 
 # Sjekk om cid eksisterer i 'users' collection
 def validate_cid(cid):
-    user_ref = db.collection('company').document(cid)
+    user_ref = db.collection('companies').document(cid)
     return user_ref.get().exists
 
 # Endepunkt for å opprette en ny tjeneste
@@ -52,7 +49,7 @@ class CreateService(Resource):
         sid = generate_service_id(title, cid)
         
         # Sjekk om tjeneste allerede eksisterer basert på title og cid
-        service_ref = db.collection('service').document(sid)
+        service_ref = db.collection('services').document(sid)
         if service_ref.get().exists:
             return {'message': 'Service with this title for the company already exists'}, 400
         
@@ -83,7 +80,7 @@ class CreateService(Resource):
 class GetServiceByCID(Resource):
     def get(self, cid):
         services = []
-        service_ref = db.collection('service').where('cid', '==', cid).get()
+        service_ref = db.collection('services').where('cid', '==', cid).get()
         
         if not service_ref:
             return {'message': 'No services found for this company'}, 404
@@ -98,7 +95,7 @@ class GetServiceByCID(Resource):
 class GetAllServices(Resource):
     def get(self):
         services = []
-        service_ref = db.collection('service').get()
+        service_ref = db.collection('services').get()
         
         for service in service_ref:
             services.append(service.to_dict())
@@ -113,7 +110,7 @@ class UpdateService(Resource):
         data = api.payload
         
         # Hent eksisterende tjeneste fra Firebase
-        service_ref = db.collection('service').document(sid)
+        service_ref = db.collection('services').document(sid)
         service = service_ref.get()
         
         if not service.exists:
@@ -136,11 +133,11 @@ class UpdateService(Resource):
         return {'message': 'Service updated successfully'}, 200
 
 # Endepunkt for å slette en tjeneste basert på sid
-@api.route('/delete/<string:sid>')
+@api.route('/del/<string:sid>')
 class DeleteService(Resource):
     def delete(self, sid):
         # Hent eksisterende tjeneste fra Firebase
-        service_ref = db.collection('service').document(sid)
+        service_ref = db.collection('services').document(sid)
         service = service_ref.get()
         
         if not service.exists:
