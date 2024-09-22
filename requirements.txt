@@ -7,5 +7,5 @@ pytz==2022.6
 requests==2.32.2
 uritemplate==4.1.1
 urllib3==1.26.12
-Werkzeug==2.2.2
+Werkzeug==3.0.3
 gunicorn==22.0.0
