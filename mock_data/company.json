@@ -1,13 +1,13 @@
 {
         "CEO": "Wiley Prince",
         "about": "Officia elit ad in nisi ullamco ex elit ea tempor. Occaecat laborum veniam tempor id. Laborum non reprehenderit proident irure exercitation amet amet qui cupidatat sit do consectetur quis.\r\nProident non et do est exercitation incididunt nisi ullamco velit culpa. Ea proident fugiat cillum irure magna exercitation Lorem duis. Lorem cupidatat anim nostrud sit officia sint ut in incididunt fugiat.\r\n",
-        "companyName": "ZIDOX",
+        "company_name": "ZIDOX",
         "address": "435 Cameron Court, Canoochee, Guam, 6458",
-        "companyLogo": "https://www.creativefabrica.com/wp-content/uploads/2020/01/06/CAR-REPAIR-LOGO-Graphics-1-580x387.jpg",
+        "company_logo": "https://www.creativefabrica.com/wp-content/uploads/2020/01/06/CAR-REPAIR-LOGO-Graphics-1-580x387.jpg",
         "email": "wileyprince@zidox.com",
-        "phoneNumber": "+47 (994) 403-3301",
-        "numberOfEmployees": 29,
-        "orgNumber": "214543232",
+        "phone_number": "+47 (994) 403-3301",
+        "employees_count": 29,
+        "org_number": "214543232",
         "role": "Rust og Lakering",
         "country": "Norge",
         "website": "www.site.com",
@@ -17,5 +17,5 @@
         "https://www.j2auto.co.za/images/page1_slide4.jpg",
         "https://www.cannonautorepair.com/images/mechanic_with_customer.jpeg"
         ],
-        "uid": "APTAlsbMfKYqdDO5phN2EnMkSBu2"
+        "uid": "5d1ee9f1fd2271bce0c64dcc6b22de301a093de92ca1d23d178eb5d8b5aa6931"
     }
